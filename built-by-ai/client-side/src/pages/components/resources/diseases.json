@@ -1,0 +1,6 @@
+[
+  { "id": "diabetes", "name": "Diabetes" },
+  { "id": "cardiovascular", "name": "Cardio-Vascular Problems" },
+  { "id": "allergies", "name": "Allergies" },
+  { "id": "flu", "name": "Flu's" }
+]
