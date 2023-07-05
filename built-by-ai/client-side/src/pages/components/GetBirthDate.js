@@ -1,5 +1,13 @@
 import React from "react";
 
+/**
+ * This component receives three properties, it handles the date of birth field in the form
+ * @param value the value of the field
+ * @param onChange the function that handles the event on change
+ * @param fieldErrors an error message to be displayed to the user
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function GetBirthDate({value, onChange, fieldErrors}){
     return(
         <>

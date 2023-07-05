@@ -1,5 +1,13 @@
 import React from "react";
 
+/**
+ * This component has three fields, and it resembles the landline field in the form
+ * @param value the value of the field
+ * @param onChange event handler
+ * @param fieldErrors error message
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function GetLandline({value, onChange, fieldErrors}){
     return(
         <>

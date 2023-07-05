@@ -1,10 +1,20 @@
 import React, {useState} from "react";
 
+/**
+ * This component has a single state, the description view, which handles the visibility of the description message
+ * using a button that toggles it. The component returns the html code that resembles the description box, including
+ * the header, the description itself and the button.
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function DescriptionMessage(){
 
     const [viewDescription, setViewDescription] = useState(true);
 
-
+    /**
+     * this function toggles the visibility of the description body, if it is true then the text is visible, and
+     * invisible otherwise.
+     */
     const toggleTextVisibility = () => {
         setViewDescription((prevIsTextVisible) => !prevIsTextVisible);
     };

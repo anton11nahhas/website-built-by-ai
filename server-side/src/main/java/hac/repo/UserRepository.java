@@ -9,6 +9,11 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * This interface acts as a dependency injection on the interface levels, where it has two function implementing
+ * two SQL queries, one for finding all the users with the came city name, the other to find all the users that were
+ * born within a specific range.
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE LOWER(u.city) = LOWER(:city)")

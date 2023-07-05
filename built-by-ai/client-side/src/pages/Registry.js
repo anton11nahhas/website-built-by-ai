@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useReducer, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import DescriptionMessage from "./components/DescriptionMessage";
 import GetFirstName from "./components/GetFirstName";
 import GetLastName from "./components/GetLastName";
@@ -12,11 +12,15 @@ import HasCovid from "./components/HasCovid";
 import PreviousConditions from "./components/PreviousConditions";
 import conditionsData from "./components/resources/diseases.json"
 import axios from 'axios'
+import ErrorMessages from "./components/ErrorMessages";
 
-
-
-
+/**
+ * This component handles the registry page, it has a header, description, and the form.
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const Registry = () => {
+    // the initial values of the data
     const initialData ={
         firstName: '',
         lastName: '',
@@ -35,14 +39,17 @@ const Registry = () => {
     const [successMessage, setSuccessMessage] = useState("")
     const [conditions, setConditions] = useState([]);
     const [fieldErrors, setFieldErrors] = useState({});
+    const [errorMsg, setErrorMsg] = useState();
 
     useEffect(() => {
         setConditions(conditionsData);
     }, []);
 
-
-
-
+    /**
+     * This function receives an event and handles the input change by updating the value provided by the user
+     * to our object
+     * @param event
+     */
     const handleInputChange = (event) => {
         const { name, value, type, checked } = event.target;
         const fieldValue = type === 'checkbox' ? checked : value;
@@ -52,9 +59,18 @@ const Registry = () => {
             [name]: fieldValue
         }));
     };
+
+    /**
+     * This function clears the form by setting our object to its initial values.
+     */
     const clearForm = () => {
         setFormData(initialData)
     }
+
+    /**
+     * This function updates the list of condition when the checkboxes are checked or unchecked
+     * @param event
+     */
     const handleConditionChange = (event) => {
         const { name, checked } = event.target;
 
@@ -71,8 +87,12 @@ const Registry = () => {
         }
     };
 
-
-
+    /**
+     * This function handles the submission of the form by fetching a post request to our api, the response returned
+     * are the error messages, if any, retrieved from the database validations, if an unexpected error occurred,
+     * the error message is updated so it can render the error page, notifying the user of the error.
+     * @param event
+     */
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -87,13 +107,17 @@ const Registry = () => {
                 });
 
             })
-            .catch(error => {
-                console.error(error.message)
-            });
+            .catch(error => setErrorMsg(error.message));
     };
 
     return (
+
         <div className="m-5 text-center">
+
+            <div>
+                <ErrorMessages errorMsg={errorMsg}/>
+            </div>
+
             <div className="row border border-success rounded">
                 <div className="col">
                     <h2>Registration Page</h2>

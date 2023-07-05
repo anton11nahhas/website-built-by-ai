@@ -1,5 +1,14 @@
 import React from "react";
 
+/**
+ * This component has four properties, and resembles the condition checkboxes in the form
+ * @param conditions list of conditions to be displayed
+ * @param formData the form data dictionary
+ * @param handleConditionChange event handler
+ * @param handleInputChange event handler
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function PreviousConditions({ conditions, formData, handleConditionChange, handleInputChange }) {
     return (
         <>

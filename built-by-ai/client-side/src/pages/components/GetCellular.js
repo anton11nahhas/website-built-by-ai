@@ -1,5 +1,13 @@
 import React from "react";
 
+/**
+ * This component receives three properties, and handles the cellular phone field in the form
+ * @param value the value of the field
+ * @param onChange the function that handles the event
+ * @param fieldErrors error message to be displayed to the user
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function GetCellular({value, onChange, fieldErrors}){
     return(
         <>

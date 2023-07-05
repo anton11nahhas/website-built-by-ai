@@ -1,5 +1,13 @@
 import React, {useState} from "react";
 
+/**
+ * This component receives three properties, and it resembles the firstname field of the form
+ * @param value the value of the field
+ * @param onChange the function that handles events
+ * @param fieldErrors error message
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function GetFirstName({value, onChange, fieldErrors}){
     return(
         <>

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect} from 'react';
 import loadingIcon from "./components/Images/loading-gif.gif"
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import ErrorMessages from "./components/ErrorMessages";
 
 
 
@@ -10,9 +11,13 @@ const Summary = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [errorMsg, setErrorMsg] = useState();
+    const [dateRangeError, setDateRangeError] = useState("");
 
 
-
+    /**
+     * This use effect hook is used to fetch for the data as soon as the user navigates to the page.
+     */
     useEffect(() => {
         setIsLoading(true); // Set loading state to true before fetching data
 
@@ -21,12 +26,13 @@ const Summary = () => {
                 setRegistrations(data);
                 setIsLoading(false);
             })
-            .catch((error) => {
-                console.error('Error fetching registrations:', error);
-                setIsLoading(false);
-            });
+            .catch(error => setErrorMsg(error.message));
     }, []);
 
+    /**
+     * This function handles the date range filter, and fetches to our api to retrieve the users with a date of birth
+     * within that range. If the dates were not provided a suitable message is displayed to the user.
+     */
     const handleDateSearch = () => {
         setIsLoading(true);
 
@@ -34,20 +40,20 @@ const Summary = () => {
             fetch(`/api/users/search-by-date?startDate=${startDate}&endDate=${endDate}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data);
                     setRegistrations(data);
                     setIsLoading(false);
                 })
-                .catch((error) => {
-                    console.error('Error fetching registrations:', error);
-                    setIsLoading(false);
-                });
+                .catch(error => setErrorMsg(error.message));
         } else {
-            console.log('Please provide both the start date and end date');
+            setIsLoading(false);
+            setDateRangeError("Please provide both the start date and end date");
         }
     };
 
-
+    /**
+     * This function handles the search by city name field, it fetches a request to our api to retrieve all the
+     * users from that wanted city.
+     */
     const handleSearch = () => {
         setIsLoading(true);
 
@@ -57,37 +63,35 @@ const Summary = () => {
                     setRegistrations(data);
                     setIsLoading(false);
                 })
-                .catch((error) => {
-                    console.error('Error fetching registrations:', error);
-                    setIsLoading(false);
-                });
+                .catch(error => setErrorMsg(error.message));
         } else {
             fetch(`/api/users/search-by-city?city=${encodeURIComponent(searchQuery)}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data);
                     setRegistrations(data);
                     setIsLoading(false);
                 })
-                .catch((error) => {
-                    console.error('Error fetching registrations:', error);
-                    setIsLoading(false);
-                });
+                .catch(error => setErrorMsg(error.message));
         }
     };
 
+    /**
+     * This function is triggered when the cancel search button is clicked, it fetches for all of the data again,
+     * retrieving all users.
+     */
     function cancelSearch(){
         fetchRegistrations()
             .then((data) => {
                 setRegistrations(data);
                 setIsLoading(false);
             })
-            .catch((error) => {
-                console.error('Error fetching registrations:', error);
-                setIsLoading(false);
-            });
+            .catch(error => setErrorMsg(error.message));
     }
 
+    /**
+     * This function fetches a guest request to the api to get all of the users in the database.
+     * @returns {Promise<any>}
+     */
     const fetchRegistrations = () => {
         setIsLoading(true); // Set loading state to true before fetching data
 
@@ -97,11 +101,7 @@ const Summary = () => {
                 setIsLoading(false);
                 return data; // Return the data
             })
-            .catch((error) => {
-                console.error('Error fetching registrations:', error);
-                setIsLoading(false);
-                throw error;
-            });
+            .catch(error => setErrorMsg(error.message));
     };
 
 
@@ -109,7 +109,9 @@ const Summary = () => {
         <div className="text-center m-5">
             <h2>Summary Page</h2>
 
-
+            <div>
+                <ErrorMessages errorMsg={errorMsg}/>
+            </div>
 
 
             {isLoading ? (
@@ -141,6 +143,7 @@ const Summary = () => {
                                 <div className="col-6 border border-info rounded">
                                     <form>
                                         <p>Search by a date range: </p>
+                                        {dateRangeError ? <p className="text text-danger">{dateRangeError}</p> : " "}
                                         <label>Enter starting date: </label>
                                         <input
                                             type="date"

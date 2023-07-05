@@ -3,7 +3,7 @@ import {Link, Outlet} from "react-router-dom";
 import {UserContext} from "../App";
 
 /**
- * this is the navigation bar that handles navigation between the market and the cart pages.
+ * this is the navigation bar that handles navigation between the register and the summary pages.
  * @returns {JSX.Element} returns the html for the navigation bar
  * @constructor
  */
